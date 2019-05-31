@@ -5,16 +5,14 @@ Rails.application.routes.draw do
   #
   namespace :api do
     namespace :v1 do
-      namespace :game do
-        post 'create', to: 'game#create'
-        get ':id/status', to: 'game#status'
+      post 'games/create', to: 'games#create'
+      get 'games/:id/status', to: 'games#status'
 
-        post ':game_id/score/create', to: 'score#create'
-        get ':game_id/score/show', to: 'score#show'
-      end
+      post 'games/:game_id/scores/create', to: 'scores#create'
+      get 'games/:game_id/scores/show', to: 'scores#show'
     end
   end
-  
+
   get '*page', to: 'welcome#index', constraints: -> (req) do
     !req.xhr? && req.format.html?
   end
