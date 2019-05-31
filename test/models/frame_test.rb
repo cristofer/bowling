@@ -48,11 +48,11 @@ class FrameTest < ActiveSupport::TestCase
   test 'it creates a Frame with the correct default values' do
     frame = games(:one).frames.create!
 
-    assert_equal frame.first_roll, 0
-    assert_equal frame.second_roll, 0
+    assert_equal frame.first_roll, -1
+    assert_equal frame.second_roll, -1
     assert_equal frame.strike, false
     assert_equal frame.spare, false
-    assert_equal frame.total, 0
+    assert_equal frame.total, -1
     assert_nil frame.number
     assert_equal frame.game, games(:one)
   end
