@@ -10,14 +10,28 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_31_102129) do
+ActiveRecord::Schema.define(version: 2019_05_31_123808) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
 
+  create_table "frames", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.integer "number"
+    t.boolean "strike"
+    t.boolean "spare"
+    t.integer "first_roll"
+    t.integer "second_roll"
+    t.integer "total"
+    t.uuid "game_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["game_id"], name: "index_frames_on_game_id"
+  end
+
   create_table "games", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
   end
 
+  add_foreign_key "frames", "games"
 end

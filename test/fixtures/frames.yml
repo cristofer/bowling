@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  number: 1
+  strike: false
+  spare: false
+  first_roll: 1
+  second_roll: 1
+  total: 1
+  game: one
+
+two:
+  number: 1
+  strike: false
+  spare: false
+  first_roll: 1
+  second_roll: 1
+  total: 1
+  game: two
