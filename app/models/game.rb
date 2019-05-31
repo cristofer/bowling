@@ -21,5 +21,7 @@ class Game < ApplicationRecord
     1.upto(10) do |frame_number|
       frames.create!(number: frame_number)
     end
+
+    self.current_frame_id = frames.first.id
   end
 end
