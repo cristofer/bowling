@@ -27,4 +27,10 @@ class GameTest < ActiveSupport::TestCase
 
     assert_equal game.name, name
   end
+
+  test 'it creates 10 Frames after creating a Game' do
+    assert_difference 'Frame.count', 10 do
+      Game.create!(name: 'With 10 Frames')
+    end
+  end
 end

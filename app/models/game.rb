@@ -12,4 +12,14 @@ class Game < ApplicationRecord
   validates :name, presence: true
 
   has_many :frames
+
+  after_create :create_default_frames
+
+  private
+
+  def create_default_frames
+    1.upto(10) do |frame_number|
+      frames.create!(number: frame_number)
+    end
+  end
 end
