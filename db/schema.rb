@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_31_131433) do
+ActiveRecord::Schema.define(version: 2019_05_31_125808) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -20,9 +20,9 @@ ActiveRecord::Schema.define(version: 2019_05_31_131433) do
     t.integer "number"
     t.boolean "strike", default: false
     t.boolean "spare", default: false
-    t.integer "first_roll", default: 0
-    t.integer "second_roll", default: 0
-    t.integer "total", default: 0
+    t.integer "first_roll", default: -1
+    t.integer "second_roll", default: -1
+    t.integer "total", default: -1
     t.uuid "game_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
