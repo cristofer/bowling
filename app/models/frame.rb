@@ -19,6 +19,18 @@ class Frame < ApplicationRecord
 
   after_update :check_strike_or_spare
 
+  def previous_frame
+    return nil if self.number == 1
+
+    game.frames.find_by(number: self.number - 1)
+  end
+
+  def next_frame
+    return nil if self.number == 10
+
+    game.frames.find_by(number: self.number + 1)
+  end
+
   private
 
   def check_strike_or_spare
