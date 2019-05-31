@@ -16,4 +16,13 @@
 
 class Frame < ApplicationRecord
   belongs_to :game
+
+  after_update :check_strike_or_spare
+
+  private
+
+  def check_strike_or_spare
+    self.strike = true and return if first_roll == 10
+    self.spare = true if first_roll + second_roll == 10
+  end
 end
