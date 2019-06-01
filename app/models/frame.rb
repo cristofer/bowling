@@ -41,6 +41,29 @@ class Frame < ApplicationRecord
     strike_or_spare? || both_rolls_played?
   end
 
+  # @return Boolean: true when boths rolls has valid points (positive)
+  def both_rolls_played?
+    first_roll.positive? && second_roll.positive?
+  end
+
+  # @return Boolean: when both rolls where played and total < 10
+  def was_played_without_strike_or_spare?
+    !strike_or_spare? && both_rolls_played?
+  end
+
+  # @return Boolean: The very last frame is special, as it could be played or not,
+  # depending on the result of the 10th frame (technically the last one).
+  # This 11th frame is 'played' only when the 10th was either striked or spared
+  def last_frame_played?
+    return true if previous_frame.strike && both_rolls_played?
+
+    return true if previous_frame.spare && first_roll.positive?
+
+    return true if previous_frame.was_played_without_strike_or_spare?
+
+    false
+  end
+
   private
 
   # It checks if the current_frame should be marked either as strike or spare
@@ -78,11 +101,6 @@ class Frame < ApplicationRecord
   # @return Boolean: either if the current frame is spare or strike
   def strike_or_spare?
     strike || spare
-  end
-
-  # @return Boolean: true when boths rolls has valid points (positive)
-  def both_rolls_played?
-    first_roll.positive? && second_roll.positive?
   end
 
   # @return Boolean: when one of the rolls is still negative (not played)
