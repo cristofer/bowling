@@ -1,7 +1,7 @@
 module Api
   module V1
     class GamesController < Base
-      # POST /api/v1/games  params: name
+      # POST /api/v1/games/:game_id/scores/create  params: name
       def create
         render json: serializer.new(create_game), status: :created
       rescue ActiveRecord::RecordInvalid => e
@@ -14,7 +14,7 @@ module Api
 
       # GET /api/v1/games/:game_id/status
       def status
-        render json: { data: { finished: game.finished? }}, status: :ok
+        render json: json_finished, status: :ok
       rescue ActiveRecord::RecordNotFound => e
         logger.fatal "ERROR: Games#status RecordNotFound: #{e}"
         render json: json_record_not_found, status: :not_found
@@ -25,16 +25,20 @@ module Api
 
       private
 
-      def game
-        Game.find(params[:game_id])
-      end
-
       def create_game
         Game.create!(name: name_param)
       end
 
       def name_param
         params[:name]
+      end
+
+      def json_finished
+        { data: { finished: game.finished? } }
+      end
+
+      def game
+        Game.find(params[:game_id])
       end
 
       def json_record_not_found

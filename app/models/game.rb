@@ -28,7 +28,7 @@ class Game < ApplicationRecord
       frames.create!(number: frame_number)
     end
 
-    self.current_frame_id = frames.first.id
+    update_columns(current_frame_id: frames.first.id)
   end
 
   # @return Boolean: When the game is in the last position

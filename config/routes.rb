@@ -8,8 +8,7 @@ Rails.application.routes.draw do
       post 'games/create', to: 'games#create'
       get 'games/:game_id/status', to: 'games#status', as: :game_status
 
-      post 'games/:game_id/scores/create', to: 'scores#create'
-      get 'games/:game_id/scores/show', to: 'scores#show'
+      post 'games/:game_id/scores/create', to: 'scores#create', as: :create_score
     end
   end
 
