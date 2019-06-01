@@ -12,9 +12,11 @@ Rails.application.routes.draw do
     end
   end
 
-  get '*page', to: 'welcome#index', constraints: -> (req) do
-    !req.xhr? && req.format.html?
-  end
+  resources :apidocs, only: [:index]
 
-  root 'welcome#index'
+  # get '*page', to: 'welcome#index', constraints: -> (req) do
+  #   !req.xhr? && req.format.html?
+  # end
+
+  # root 'welcome#index'
 end
