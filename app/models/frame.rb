@@ -36,6 +36,11 @@ class Frame < ApplicationRecord
     game.frames.find_by(number: self.number + 1)
   end
 
+  # @return Boolean: true either if game was strike or spare, or both rolls are possitive
+  def frame_has_finished?
+    strike_or_spare? || both_rolls_played?
+  end
+
   private
 
   # It checks if the current_frame should be marked either as strike or spare
@@ -83,10 +88,6 @@ class Frame < ApplicationRecord
   # @return Boolean: when one of the rolls is still negative (not played)
   def still_rolls_unplayed?
     !both_rolls_played?
-  end
-
-  def frame_has_finished?
-    strike_or_spare? || both_rolls_played?
   end
 
   # It updates the current_frame for the game

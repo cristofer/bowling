@@ -15,6 +15,10 @@ class Game < ApplicationRecord
 
   after_create :create_default_frames
 
+  def finished?
+    frames.last.frame_has_finished?
+  end
+
   private
 
   def create_default_frames
