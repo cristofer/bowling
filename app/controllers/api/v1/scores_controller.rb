@@ -1,6 +1,6 @@
 module Api
   module V1
-    SCORE_CAN_NOT_BE_EMPTY = "Score can not be empty, or greater than 10, or negative"
+    SCORE_NOT_VALID = "Score can not be greater than 10, or negative"
     THE_GAME_HAS_FINISHED = "The Game has finished, you can not score anymore"
 
     class ScoresController < Base
@@ -64,16 +64,20 @@ module Api
       end
 
       def score
-        raise ScoreError if params[:score].blank? || params[:score].to_i > 10 ||  params[:score].to_i.negative?
-        params[:score]
+        raise ScoreError if param_score > 10 ||  param_score.negative?
+        param_score
+      end
+
+      def param_score
+        params[:score].to_i
       end
 
       def json_record_invalid_error
-        { data: { error: SCORE_CAN_NOT_BE_EMPTY } }
+        { data: { error: SCORE_NOT_VALID } }
       end
 
       def json_score_can_not_be_empty
-        { data: { error: SCORE_CAN_NOT_BE_EMPTY } }
+        { data: { error: SCORE_NOT_VALID } }
       end
 
       def json_game_has_finished
@@ -87,7 +91,7 @@ module Api
 
     class ScoreError < StandardError
       def message
-        SCORE_CAN_NOT_BE_EMPTY
+        SCORE_NOT_VALID
       end
     end
 

@@ -16,19 +16,19 @@ class Api::V1::ScoresControllerTest < ActionDispatch::IntegrationTest
     assert_equal data['first_roll'], score
   end
 
-  test 'Score can not be empty' do
+  test 'Score empty is 0' do
     game = Game.create(name: 'New')
 
     score = ''
 
     post api_v1_create_score_path(game_id: game.id), params: { score: score }
 
-    assert_response :bad_request
+    assert_response :created
 
     body = JSON.parse(response.body).with_indifferent_access
     data = body['data']
 
-    assert_equal data['error'], 'Score can not be empty, or greater than 10, or negative'
+    assert_equal data['first_roll'], 0
   end
 
   test 'Score can not created if the Game has finished' do
