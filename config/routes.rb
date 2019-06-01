@@ -14,5 +14,9 @@ Rails.application.routes.draw do
 
   resources :apidocs, only: [:index]
 
-  get '/', to: redirect('apidoc/index.html')
+  get '*page', to: 'welcome#index', constraints: -> (req) do
+    !req.xhr? && req.format.html?
+  end
+
+  root 'welcome#index'
 end

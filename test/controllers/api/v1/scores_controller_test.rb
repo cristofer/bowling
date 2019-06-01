@@ -31,6 +31,27 @@ class Api::V1::ScoresControllerTest < ActionDispatch::IntegrationTest
     assert_equal data['first_roll'], 0
   end
 
+  test 'Total frame can not be bigger than 10' do
+    game = Game.create(name: 'New')
+
+    first_roll = 8
+
+    post api_v1_create_score_path(game_id: game.id), params: { score: first_roll }
+
+    assert_response :created
+
+    second_roll = 3
+
+    post api_v1_create_score_path(game_id: game.id), params: { score: second_roll }
+
+    assert_response :bad_request
+
+    body = JSON.parse(response.body).with_indifferent_access
+    data = body['data']
+
+    assert_equal data['error'], 'Both rolls can not add more than 10'
+  end
+
   test 'Score can not created if the Game has finished' do
     game = Game.create(name: 'New')
     last_frame = game.frames.last

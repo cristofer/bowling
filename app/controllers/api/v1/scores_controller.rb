@@ -48,6 +48,9 @@ module Api
       rescue GameFinishedError => e
         logger.fatal "ERROR: Scores#create: GameFinishedError: #{e}"
         render json: json_game_has_finished, status: :bad_request
+      rescue GreaterThanTenError => e
+        logger.fatal "ERROR: Scores#create: GreaterThanTenError: #{e}"
+        render json: json_wrong_total_score, status: :bad_request
       rescue StandardError => e
         logger.fatal "ERROR: Scores#create: StandardError: #{e}"
         render json: json_standard_error, status: :internal_server_error
@@ -82,6 +85,10 @@ module Api
 
       def json_game_has_finished
         { data: { error: THE_GAME_HAS_FINISHED } }
+      end
+
+      def json_wrong_total_score
+        { data: { error: 'Both rolls can not add more than 10' } }
       end
 
       def json_standard_error

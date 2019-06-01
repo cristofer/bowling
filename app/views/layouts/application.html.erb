@@ -1,16 +1,24 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Freeletics</title>
+    <title>Free-Bowling</title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.4/css/bulma.min.css"
+    />
     <%= javascript_pack_tag 'application' %>
   </head>
 
   <body>
-    <%= yield %>
+    <section class='section'>
+      <%= yield %>
+    </section>
   </body>
 </html>
