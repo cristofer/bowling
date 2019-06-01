@@ -55,4 +55,37 @@ class Api::V1::GamesControllerTest < ActionDispatch::IntegrationTest
 
     assert_equal body['data']['finished'], true
   end
+
+  test 'it gets all the Frames when requesting the status' do
+    game = Game.create(name: 'New')
+
+    get api_v1_game_status_path(game_id: game.id)
+
+    assert_response :success
+
+    body = JSON.parse(response.body).with_indifferent_access
+
+    assert_equal body['data']['frames'].size, 11
+  end
+
+  test 'it gets the correct data in the frames' do
+    game = Game.create(name: 'New')
+    first_frame = game.frames.first
+    first_frame.first_roll = first_frame.second_roll = 4
+    first_frame.save!
+
+    get api_v1_game_status_path(game_id: game.id)
+
+    assert_response :success
+
+    body = JSON.parse(response.body).with_indifferent_access
+    first_frame_in_data = body['data']['frames'].first[1]
+
+    assert_equal first_frame_in_data['id'], first_frame.id
+    assert_equal first_frame_in_data['first_roll'], first_frame.first_roll
+    assert_equal first_frame_in_data['second_roll'], first_frame.second_roll
+    assert_equal first_frame_in_data['total'], first_frame.total
+    assert_equal first_frame_in_data['strike'], first_frame.strike
+    assert_equal first_frame_in_data['spare'], first_frame.spare
+  end
 end

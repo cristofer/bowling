@@ -28,7 +28,7 @@ class Api::V1::ScoresControllerTest < ActionDispatch::IntegrationTest
     body = JSON.parse(response.body).with_indifferent_access
     data = body['data']
 
-    assert_equal data['error'], 'Score can not be empty'
+    assert_equal data['error'], 'Score can not be empty, or greater than 10, or negative'
   end
 
   test 'Score can not created if the Game has finished' do

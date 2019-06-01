@@ -1,6 +1,8 @@
 module Api
   module V1
     class GamesController < Base
+      ## Create
+
       swagger_path '/api/v1/games/create' do
         operation :post do
           key :summary, 'It initialises a new Game'
@@ -36,10 +38,12 @@ module Api
         render json: json_error, status: :internal_server_error
       end
 
+      ## Status
+
       swagger_path '/api/v1/games/{game_id}/status' do
         operation :get do
           key :summary, 'It retrieves the status of the game'
-          key :description, 'Returns if the Game has finished or not'
+          key :description, 'Returns if the Game has finished or not, the total score, and all the Frames'
           key :operationId, 'statusGame'
           parameter do
             key :name, :game_id
@@ -59,7 +63,8 @@ module Api
 
       # GET /api/v1/games/:game_id/status
       def status
-        render json: json_finished, status: :ok
+        get_status_of_the_game = GameStatusService.new(game: game).call
+        render json: get_status_of_the_game, status: :ok
       rescue ActiveRecord::RecordNotFound => e
         logger.fatal "ERROR: Games#status RecordNotFound: #{e}"
         render json: json_record_not_found, status: :not_found

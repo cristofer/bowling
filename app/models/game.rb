@@ -20,6 +20,11 @@ class Game < ApplicationRecord
     current_frame_is_the_last_one? && frames.last.last_frame_played?
   end
 
+  # @return Integer: the current total, it doesnt count the frames that have not been finished yet
+  def current_total
+    frames.where.not(total: -1).sum(:total)
+  end
+
   private
 
   # It sets the 11 frames (11th the special case only when the 10th is either strike or spare)
