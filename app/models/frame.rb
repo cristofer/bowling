@@ -31,7 +31,7 @@ class Frame < ApplicationRecord
 
   # @return Frame: the next frame if the current_one is not the last one
   def next_frame
-    return nil if self.number == 10
+    return nil if self.number == 11
 
     game.frames.find_by(number: self.number + 1)
   end
