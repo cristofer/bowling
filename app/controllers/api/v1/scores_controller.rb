@@ -1,6 +1,6 @@
 module Api
   module V1
-    SCORE_CAN_NOT_BE_EMPTY = "Score can not be empty"
+    SCORE_CAN_NOT_BE_EMPTY = "Score can not be empty, or greater than 10, or negative"
     THE_GAME_HAS_FINISHED = "The Game has finished, you can not score anymore"
 
     class ScoresController < Base
@@ -33,7 +33,7 @@ module Api
       end
 
       def score
-        raise ScoreError if params[:score].blank?
+        raise ScoreError if params[:score].blank? || params[:score].to_i > 10 ||  params[:score].to_i.negative?
         params[:score]
       end
 
