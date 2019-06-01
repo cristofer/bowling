@@ -16,6 +16,47 @@ class Api::V1::ScoresControllerTest < ActionDispatch::IntegrationTest
     assert_equal data['first_roll'], score
   end
 
+  test 'Score can not be empty' do
+    game = Game.create(name: 'New')
+
+    score = ''
+
+    post api_v1_create_score_path(game_id: game.id), params: { score: score }
+
+    assert_response :bad_request
+
+    body = JSON.parse(response.body).with_indifferent_access
+    data = body['data']
+
+    assert_equal data['error'], 'Score can not be empty'
+  end
+
+  test 'Score can not created if the Game has finished' do
+    game = Game.create(name: 'New')
+    last_frame = game.frames.last
+    prev_last_frame = last_frame.previous_frame
+
+    prev_last_frame.first_roll = 3
+    prev_last_frame.second_roll = 2
+
+    prev_last_frame.save!
+
+    game.current_frame_id = game.frames.last.id
+
+    game.reload
+
+    score = 1
+
+    post api_v1_create_score_path(game_id: game.id), params: { score: score }
+
+    assert_response :bad_request
+
+    body = JSON.parse(response.body).with_indifferent_access
+    data = body['data']
+
+    assert_equal data['error'], 'The Game has finished, you can not score anymore'
+  end
+
   test 'Two Scores set the total (no Spare)' do
     game = Game.create(name: 'New')
 
