@@ -43,7 +43,7 @@ class Frame < ApplicationRecord
 
   # @return Boolean: true when boths rolls has valid points (positive)
   def both_rolls_played?
-    first_roll.positive? && second_roll.positive?
+    first_roll >= 0 && second_roll >= 0
   end
 
   # @return Boolean: when both rolls where played and total < 10
