@@ -6,7 +6,7 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       post 'games/create', to: 'games#create'
-      get 'games/:id/status', to: 'games#status'
+      get 'games/:game_id/status', to: 'games#status', as: :game_status
 
       post 'games/:game_id/scores/create', to: 'scores#create'
       get 'games/:game_id/scores/show', to: 'scores#show'
