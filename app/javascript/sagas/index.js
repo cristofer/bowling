@@ -3,8 +3,8 @@ import axios from "axios";
 
 import { gameCreated, scoreCreated, setStatusGame } from "../actions";
 
-// API_BASE_URL = "https://free-bowling.herokuapp.com/api/v1/";
-const API_BASE_URL = "http://localhost:3000/api/v1/games/";
+const API_BASE_URL = "https://free-bowling.herokuapp.com/api/v1/games/";
+// const API_BASE_URL = "http://localhost:3000/api/v1/games/";
 
 /* API */
 
