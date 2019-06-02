@@ -24,6 +24,10 @@ class Frame < ApplicationRecord
   after_update :calculate_previous_total, if: :frame_has_finished?
   after_update :update_current_frame_for_game, if: :frame_has_finished?
 
+  scope :ten_frames, -> { where.not(number: 11) }
+  scope :with_possitive_total, -> { where.not(total: -1) }
+  scope :ten_frames_and_possitive_total, -> { ten_frames.with_possitive_total }
+
   # @return Frame: the previous frame if the current_one is not the first one
   def previous_frame
     return nil if number == 1
@@ -76,6 +80,8 @@ class Frame < ApplicationRecord
 
   # It updates the total once both rolls have been played
   def calculate_total
+    return if number == 11
+
     return if strike_or_spare?
 
     return unless both_rolls_played?

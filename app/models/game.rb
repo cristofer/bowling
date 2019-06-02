@@ -24,7 +24,7 @@ class Game < ApplicationRecord
 
   # @return Integer: the current total, it doesnt count the frames that have not been finished yet
   def current_total
-    frames.where.not(total: -1).sum(:total)
+    frames.ten_frames_and_possitive_total.sum(:total)
   end
 
   private
