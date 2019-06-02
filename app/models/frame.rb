@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: frames
@@ -24,16 +26,16 @@ class Frame < ApplicationRecord
 
   # @return Frame: the previous frame if the current_one is not the first one
   def previous_frame
-    return nil if self.number == 1
+    return nil if number == 1
 
-    game.frames.find_by(number: self.number - 1)
+    game.frames.find_by(number: number - 1)
   end
 
   # @return Frame: the next frame if the current_one is not the last one
   def next_frame
-    return nil if self.number == 11
+    return nil if number == 11
 
-    game.frames.find_by(number: self.number + 1)
+    game.frames.find_by(number: number + 1)
   end
 
   # @return Boolean: true either if game was strike or spare, or both rolls are possitive
@@ -68,8 +70,8 @@ class Frame < ApplicationRecord
 
   # It checks if the current_frame should be marked either as strike or spare
   def check_strike_or_spare
-    self.update_columns(strike: true, total: 10, second_roll: 0) and return if first_roll == 10
-    self.update_columns(spare: true, total: 10) if first_roll + second_roll == 10
+    update_columns(strike: true, total: 10, second_roll: 0) && return if first_roll == 10
+    update_columns(spare: true, total: 10) if first_roll + second_roll == 10
   end
 
   # It updates the total once both rolls have been played
@@ -78,7 +80,7 @@ class Frame < ApplicationRecord
 
     return unless both_rolls_played?
 
-    self.update_columns(total: first_roll + second_roll)
+    update_columns(total: first_roll + second_roll)
   end
 
   # It sets the previous total when corresponding (prev frame strike or sspare)

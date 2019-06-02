@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class EnablePgcryptoExtension < ActiveRecord::Migration[5.2]
   # For UUID
   def change

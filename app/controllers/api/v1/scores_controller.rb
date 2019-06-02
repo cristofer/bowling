@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 module Api
   module V1
-    SCORE_NOT_VALID = "Score can not be greater than 10, or negative"
-    THE_GAME_HAS_FINISHED = "The Game has finished, you can not score anymore"
+    SCORE_NOT_VALID = 'Score can not be greater than 10, or negative'
+    THE_GAME_HAS_FINISHED = 'The Game has finished, you can not score anymore'
 
     class ScoresController < Base
       swagger_path '/api/v1/games/{game_id}/scores/create' do
@@ -67,7 +69,8 @@ module Api
       end
 
       def score
-        raise ScoreError if param_score > 10 ||  param_score.negative?
+        raise ScoreError if param_score > 10 || param_score.negative?
+
         param_score
       end
 

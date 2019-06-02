@@ -30,6 +30,6 @@ end
 
 class GreaterThanTenError < StandardError
   def message
-    "Both rolls can not add more than 10"
+    'Both rolls can not add more than 10'
   end
 end

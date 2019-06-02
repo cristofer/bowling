@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ApidocsController < ActionController::Base
   include Swagger::Blocks
 
@@ -24,7 +26,7 @@ class ApidocsController < ActionController::Base
   SWAGGERED_CLASSES = [
     Api::V1::GamesController,
     Api::V1::ScoresController,
-    self,
+    self
   ].freeze
 
   def index

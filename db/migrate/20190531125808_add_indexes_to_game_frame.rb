@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddIndexesToGameFrame < ActiveRecord::Migration[5.2]
   def change
     add_index :games, :created_at
