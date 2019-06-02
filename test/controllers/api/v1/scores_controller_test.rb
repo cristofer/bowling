@@ -80,6 +80,30 @@ class Api::V1::ScoresControllerTest < ActionDispatch::IntegrationTest
     assert_equal data['error'], 'The Game has finished, you can not score anymore'
   end
 
+  test 'Two Scores 0 set the total and it updates the current_frame_id' do
+    game = Game.create(name: 'New')
+
+    first_roll = 0
+    post api_v1_create_score_path(game_id: game.id), params: { score: first_roll }
+
+    assert_response :created
+
+    second_roll = 0
+    post api_v1_create_score_path(game_id: game.id), params: { score: second_roll }
+
+    assert_response :created
+
+    body = JSON.parse(response.body).with_indifferent_access
+    data = body['data']
+
+    game.reload
+
+    assert_equal data['first_roll'], first_roll
+    assert_equal data['second_roll'], second_roll
+    assert_equal data['total'], first_roll + second_roll
+    assert_equal game.current_frame_id, game.frames.second.id
+  end
+
   test 'Two Scores set the total (no Spare)' do
     game = Game.create(name: 'New')
 
