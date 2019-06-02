@@ -44,7 +44,7 @@ class Frame < ApplicationRecord
 
   # @return Boolean: true either if game was strike or spare, or both rolls are possitive
   def frame_has_finished?
-    strike_or_spare? || both_rolls_played?
+    strike_or_spare? || both_rolls_played? || last_frame_with_previous_spare
   end
 
   # @return Boolean: true when boths rolls has valid points (positive)
@@ -119,5 +119,13 @@ class Frame < ApplicationRecord
   # It updates the current_frame for the game
   def update_current_frame_for_game
     game.update_columns(current_frame_id: next_frame.id) if next_frame.present?
+  end
+
+  # For the special frame (11th) we have to deal with its previous as a Spare
+  # in order to recalculate the total of the 10th frame
+  def last_frame_with_previous_spare
+    return false if number < 11
+
+    previous_frame.spare
   end
 end
