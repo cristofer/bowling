@@ -45,7 +45,7 @@ class Frame < ApplicationRecord
 
   # @return Boolean: true when boths rolls has valid points (positive)
   def both_rolls_played?
-    first_roll >= 0 && second_roll >= 0
+    !first_roll.negative? && !second_roll.negative?
   end
 
   # @return Boolean: when both rolls where played and total < 10
@@ -59,7 +59,7 @@ class Frame < ApplicationRecord
   def last_frame_played?
     return true if previous_frame.strike && both_rolls_played?
 
-    return true if previous_frame.spare && first_roll.positive?
+    return true if previous_frame.spare && !first_roll.negative?
 
     return true if previous_frame.was_played_without_strike_or_spare?
 
