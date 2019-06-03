@@ -1,10 +1,13 @@
 import { put, takeEvery, all, call, select } from "redux-saga/effects";
 import axios from "axios";
 
-import { gameCreated, scoreCreated, setStatusGame } from "../actions";
-
-const API_BASE_URL = "https://free-bowling.herokuapp.com/api/v1/games/";
-// const API_BASE_URL = "http://localhost:3000/api/v1/games/";
+import {
+  gameCreated,
+  scoreCreated,
+  setStatusGame,
+  statusGame
+} from "../actions";
+import { API_BASE_URL } from "../constants";
 
 /* API */
 
@@ -45,6 +48,7 @@ function* createGameWorker({ name }) {
     const { data } = yield call(createGameApi, name);
 
     yield put(gameCreated(data.data.id, data.data.attributes.name));
+    yield put(statusGame(data.data.id));
   } catch (e) {
     console.log("Error in createGameWorker");
     console.log(e);

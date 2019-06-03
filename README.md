@@ -41,3 +41,9 @@ Running the tests (Minitest, of course! :)
 ```
 bundle exec rails test
 ```
+
+# ActionCable
+
+So I implemented a very simple Channel (`GamesChannel`) using `ActionCable`, before I was using a 2 seconds
+interval in order to retrieve the status of the game, now the states in the Front-End is updated only
+when the a new score is annotated for the specific game.

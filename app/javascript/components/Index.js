@@ -4,6 +4,8 @@ import { Provider } from "react-redux";
 import { createStore, applyMiddleware } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension";
 
+import { ActionCableProvider } from "react-actioncable-provider";
+
 import createSagaMiddleware from "redux-saga";
 import rootSaga from "../sagas";
 
@@ -19,14 +21,17 @@ const store = createStore(
 sagaMiddleware.run(rootSaga);
 
 import Game from "./Game";
+import { WEBSOCKET } from "../constants";
 
 class Index extends React.Component {
   render() {
     return (
       <Provider store={store}>
-        <section className="section">
-          <Game />
-        </section>
+        <ActionCableProvider url={`${WEBSOCKET}`}>
+          <section className="section">
+            <Game />
+          </section>
+        </ActionCableProvider>
       </Provider>
     );
   }

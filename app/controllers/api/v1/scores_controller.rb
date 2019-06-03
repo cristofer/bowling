@@ -42,6 +42,7 @@ module Api
         check_game_finished
 
         new_score = NewScoreService.new(game: game, score: score).call
+        GamesChannel.broadcast_to(game, new_score: 'true')
 
         render json: { data: new_score }, status: :created
       rescue ScoreError => e

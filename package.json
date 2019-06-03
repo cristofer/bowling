@@ -8,6 +8,7 @@
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
     "prop-types": "^15.7.2",
     "react": "^16.8.6",
+    "react-actioncable-provider": "^2.0.0",
     "react-dom": "^16.8.6",
     "react-redux": "^6.0.1",
     "react_ujs": "^2.5.0",

@@ -8,16 +8,12 @@ import Scores from "./Scores";
 
 class Game extends React.PureComponent {
   componentDidMount() {
-    const intervalId = setInterval(() => {
-      this.props.statusGame(this.props.game.id);
-    }, 2000);
-
-    this.setState({ intervalId: intervalId, gameName: "" });
+    this.setState({ gameName: "" });
   }
 
-  componentWillUnmount() {
-    clearInterval(this.state.intervalId);
-  }
+  handleStatusGame = response => {
+    this.props.statusGame(this.props.game.id);
+  };
 
   handleChangeText = evt => {
     this.setState({
@@ -82,7 +78,11 @@ class Game extends React.PureComponent {
           </div>
 
           <div className="column">
-            <Scores statusGame={this.props.status_game} />
+            <Scores
+              statusGame={this.props.status_game}
+              handleStatusGame={this.handleStatusGame}
+              gameId={this.props.game.id}
+            />
           </div>
         </div>
       </div>
