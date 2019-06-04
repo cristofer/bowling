@@ -19,6 +19,8 @@ The total on each Frame is just that total, not the Total of the Game, the clien
 
 Please make sure your config in the `config/database.yml` is the correct one.
 
+And also change the corresponding URLs https://github.com/cristofer/bowling/blob/master/app/javascript/constants/index.js
+
 ```
 bundle
 bundle exec rails db:setup
