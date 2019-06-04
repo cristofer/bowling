@@ -2,7 +2,7 @@
 
 This is a very simple API for setup a new Bowling game, and manage its scores. (please refer to https://en.wikipedia.org/wiki/Ten-pin_bowling#Scoring for the rules of the Ten Pin Bowling).
 
-You can see a live version here: https://free-bowling.herokuapp.com
+You can see a live version here: https://free-bowling.herokuapp.com (with some connectivity issues, do not have so much time to get into that, so I recommend to test it locally :)
 
 It is quite simple, it does not manage teams just yet, but it displays the status of the game (total, frames).
 
