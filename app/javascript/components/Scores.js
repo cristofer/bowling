@@ -1,7 +1,5 @@
 import React from "react";
 
-import { ActionCableConsumer } from "react-actioncable-provider";
-
 class Scores extends React.PureComponent {
   render() {
     const { total, finished, frames } = this.props.statusGame;
@@ -41,13 +39,6 @@ class Scores extends React.PureComponent {
 
     return (
       <React.Fragment>
-        {this.acc ||
-          (this.acc = (
-            <ActionCableConsumer
-              channel={{ channel: "GamesChannel", game_id: this.props.gameId }}
-              onReceived={this.props.handleStatusGame}
-            />
-          ))}
         <table className="table">
           <thead>
             <tr>
