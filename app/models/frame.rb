@@ -19,10 +19,7 @@
 class Frame < ApplicationRecord
   belongs_to :game
 
-  after_update :check_strike_or_spare
-  after_update :calculate_total
-  after_update :calculate_previous_total, if: :frame_has_finished?
-  after_update :update_current_frame_for_game, if: :frame_has_finished?
+  after_update :call_service_for_frames
 
   scope :ten_frames, -> { where.not(number: 11) }
   scope :with_possitive_total, -> { where.not(total: -1) }
@@ -49,7 +46,7 @@ class Frame < ApplicationRecord
 
   # @return Boolean: true when boths rolls has valid points (positive)
   def both_rolls_played?
-    !first_roll.negative? && !second_roll.negative?
+    first_roll >= 0 && second_roll >= 0
   end
 
   # @return Boolean: when both rolls where played and total < 10
@@ -70,55 +67,19 @@ class Frame < ApplicationRecord
     false
   end
 
-  private
-
-  # It checks if the current_frame should be marked either as strike or spare
-  def check_strike_or_spare
-    update_columns(strike: true, total: 10, second_roll: 0) && return if first_roll == 10
-    update_columns(spare: true, total: 10) if first_roll + second_roll == 10
-  end
-
-  # It updates the total once both rolls have been played
-  def calculate_total
-    return if number == 11
-
-    return if strike_or_spare?
-
-    return unless both_rolls_played?
-
-    update_columns(total: first_roll + second_roll)
-  end
-
-  # It sets the previous total when corresponding (prev frame strike or sspare)
-  def calculate_previous_total
-    return if number == 1 # nothing to calculate if it is the first frame
-
-    return unless previous_frame.strike || previous_frame.spare
-
-    if previous_frame.strike
-      new_total = first_roll + second_roll + previous_frame.total
-      previous_frame.update_columns(total: new_total)
-    end
-
-    if previous_frame.spare
-      new_total = first_roll + previous_frame.total
-      previous_frame.update_columns(total: new_total)
-    end
-  end
-
-  # @return Boolean: either if the current frame is spare or strike
   def strike_or_spare?
     strike || spare
+  end
+
+  private
+
+  def call_service_for_frames
+    FramesService.new(self).call
   end
 
   # @return Boolean: when one of the rolls is still negative (not played)
   def still_rolls_unplayed?
     !both_rolls_played?
-  end
-
-  # It updates the current_frame for the game
-  def update_current_frame_for_game
-    game.update_columns(current_frame_id: next_frame.id) if next_frame.present?
   end
 
   # For the special frame (11th) we have to deal with its previous as a Spare

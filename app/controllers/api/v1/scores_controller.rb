@@ -2,9 +2,6 @@
 
 module Api
   module V1
-    SCORE_NOT_VALID = 'Score can not be greater than 10, or negative'
-    THE_GAME_HAS_FINISHED = 'The Game has finished, you can not score anymore'
-
     class ScoresController < Base
       swagger_path '/api/v1/games/{game_id}/scores/create' do
         operation :post do
@@ -39,76 +36,16 @@ module Api
 
       # POST /api/v1/games/:game_id/scores/create  params: name
       def create
-        check_game_finished
+        game = Game.find(params[:game_id])
+        score = Integer(params[:score])
 
         new_score = NewScoreService.new(game: game, score: score).call
-        GamesChannel.broadcast_to(game, new_score: 'true')
 
-        render json: { data: new_score }, status: :created
-      rescue ScoreError => e
-        logger.fatal "ERROR: Scores#create: ScoreError: #{e}"
-        render json: json_score_can_not_be_empty, status: :bad_request
-      rescue GameFinishedError => e
-        logger.fatal "ERROR: Scores#create: GameFinishedError: #{e}"
-        render json: json_game_has_finished, status: :bad_request
-      rescue GreaterThanTenError => e
-        logger.fatal "ERROR: Scores#create: GreaterThanTenError: #{e}"
-        render json: json_wrong_total_score, status: :bad_request
-      rescue StandardError => e
-        logger.fatal "ERROR: Scores#create: StandardError: #{e}"
-        render json: json_standard_error, status: :internal_server_error
-      end
-
-      private
-
-      def check_game_finished
-        raise GameFinishedError if game.finished?
-      end
-
-      def game
-        Game.find(params[:game_id])
-      end
-
-      def score
-        raise ScoreError if param_score > 10 || param_score.negative?
-
-        param_score
-      end
-
-      def param_score
-        params[:score].to_i
-      end
-
-      def json_record_invalid_error
-        { data: { error: SCORE_NOT_VALID } }
-      end
-
-      def json_score_can_not_be_empty
-        { data: { error: SCORE_NOT_VALID } }
-      end
-
-      def json_game_has_finished
-        { data: { error: THE_GAME_HAS_FINISHED } }
-      end
-
-      def json_wrong_total_score
-        { data: { error: 'Both rolls can not add more than 10' } }
-      end
-
-      def json_standard_error
-        { data: { error: 'There was an internal error, we could not create the Score' } }
-      end
-    end
-
-    class ScoreError < StandardError
-      def message
-        SCORE_NOT_VALID
-      end
-    end
-
-    class GameFinishedError < StandardError
-      def message
-        THE_GAME_HAS_FINISHED
+        if new_score.valid?
+          render json: { data: new_score }, status: :created
+        else
+          json_errors(new_score)
+        end
       end
     end
   end

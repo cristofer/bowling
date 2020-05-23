@@ -32,7 +32,7 @@ class Game < ApplicationRecord
   # It sets the 11 frames (11th the special case only when the 10th is either strike or spare)
   def create_default_frames
     1.upto(11) do |frame_number|
-      frames.create!(number: frame_number)
+      frames.create(number: frame_number)
     end
 
     update_columns(current_frame_id: frames.first.id)

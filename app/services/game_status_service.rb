@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
 class GameStatusService
-  def initialize(game:)
+  attr_reader :game
+
+  def initialize(game)
     @game = game
   end
 
@@ -12,9 +14,9 @@ class GameStatusService
   private
 
   def setup_status
-    total = @game.current_total
-    finished = @game.finished?
-    frames = @game.frames
+    total = game.current_total
+    finished = game.finished?
+    frames = game.frames
     frames_to_return = {}
 
     frames.each do |frame|
