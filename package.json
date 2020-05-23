@@ -1,5 +1,5 @@
 {
-  "name": "freeletics",
+  "name": "bowling",
   "private": true,
   "dependencies": {
     "@babel/preset-react": "^7.0.0",

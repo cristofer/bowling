@@ -1,20 +1,21 @@
 default: &default
+  host: localhost
   adapter: postgresql
   encoding: unicode
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-  username: freeletics
-  password: freeletics
+  username: bowling
+  password: bowling
 
 development:
   <<: *default
-  database: freeletics_dev
+  database: bowling_dev
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
 # Do not set this db to the same as development or production.
 test:
   <<: *default
-  database: freeletics_test
+  database: bowling_test
 
 production:
   url: <%= ENV['DATABASE_URL'] %>
