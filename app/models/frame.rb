@@ -21,9 +21,9 @@ class Frame < ApplicationRecord
 
   after_update :call_service_for_frames
 
+  scope :ten_frames_and_possitive_total, -> { ten_frames.with_possitive_total }
   scope :ten_frames, -> { where.not(number: 11) }
   scope :with_possitive_total, -> { where.not(total: -1) }
-  scope :ten_frames_and_possitive_total, -> { ten_frames.with_possitive_total }
 
   # @return Frame: the previous frame if the current_one is not the first one
   def previous_frame
@@ -57,7 +57,7 @@ class Frame < ApplicationRecord
   # @return Boolean: The very last frame is special, as it could be played or not,
   # depending on the result of the 10th frame (technically the last one).
   # This 11th frame is 'played' only when the 10th was either striked or spared
-  def last_frame_played?
+  def was_played?
     return true if previous_frame.strike && both_rolls_played?
 
     return true if previous_frame.spare && !first_roll.negative?

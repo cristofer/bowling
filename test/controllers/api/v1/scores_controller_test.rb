@@ -25,12 +25,12 @@ class Api::V1::ScoresControllerTest < ActionDispatch::IntegrationTest
 
     post api_v1_create_score_path(game_id: game.id), params: { score: score }
 
-    assert_response :created
+    assert_response :bad_request
 
     body = JSON.parse(response.body).with_indifferent_access
-    data = body['data']
+    error = body['error']
 
-    assert_equal data['first_roll'], 0
+    assert_equal error, 'The score must be a number between 0 and 10'
   end
 
   test 'Total frame can not be bigger than 10' do
@@ -49,9 +49,9 @@ class Api::V1::ScoresControllerTest < ActionDispatch::IntegrationTest
     assert_response :bad_request
 
     body = JSON.parse(response.body).with_indifferent_access
-    data = body['data']
+    error = body['error']
 
-    assert_equal data['error'], 'Both rolls can not add more than 10'
+    assert_equal error, 'The sum of both shots can not be more than 10'
   end
 
   test 'Score can not created if the Game has finished' do
@@ -75,9 +75,9 @@ class Api::V1::ScoresControllerTest < ActionDispatch::IntegrationTest
     assert_response :bad_request
 
     body = JSON.parse(response.body).with_indifferent_access
-    data = body['data']
+    error = body['error']
 
-    assert_equal data['error'], 'The Game has finished, you can not score anymore'
+    assert_equal error, 'This game has finished, you can not score anymore'
   end
 
   test 'Two Scores 0 set the total and it updates the current_frame_id' do

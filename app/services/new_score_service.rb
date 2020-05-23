@@ -10,7 +10,6 @@ class NewScoreService
   end
 
   def call
-    byebug
     raise HandleErrorsConcern::ScoreError, score if score.negative? || score > 10
 
     raise HandleErrorsConcern::GameHasFinishedError if game.finished?
@@ -30,7 +29,7 @@ class NewScoreService
       current_frame.second_roll = score
     end
 
-    raise TotalScoreGreaterThanTenError if current_frame.first_roll + current_frame.second_roll > 10
+    raise HandleErrorsConcern::TotalScoreGreaterThanTenError if current_frame.first_roll + current_frame.second_roll > 10
 
     current_frame.save
 

@@ -18,11 +18,11 @@ class Api::V1::GamesControllerTest < ActionDispatch::IntegrationTest
   test 'it does not create a new Game when name is empty' do
     post api_v1_games_create_path, params: { name: '' }
 
-    assert_response :bad_request
+    assert_response :error
 
     body = JSON.parse(response.body)
 
-    assert_equal body['data']['error'], 'Name can not be empty'
+    assert_equal body['errors'].first, "Name can't be blank"
   end
 
   test 'it gets the correct status when Game has not finished' do

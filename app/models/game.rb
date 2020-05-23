@@ -19,7 +19,7 @@ class Game < ApplicationRecord
 
   # @return Boolean: when the game is in the last frame and the 10th was totally finished
   def finished?
-    current_frame_is_the_last_one? && frames.last.last_frame_played?
+    current_frame_is_the_last_one? && frames.last.was_played?
   end
 
   # @return Integer: the current total, it doesnt count the frames that have not been finished yet
